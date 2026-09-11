@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#eef5fb">
+  <title>John Hong | Portfolio</title>
+  <style>
+    :root{
+      --blue:#1976d2;
+      --blue-dark:#125ca6;
+      --ink:#16324f;
+      --muted:#61758a;
+      --surface:rgba(255,255,255,.94);
+      --line:rgba(25,118,210,.13);
+      --shadow:0 18px 55px rgba(33,73,108,.14);
+      --radius:24px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
+    body{background:#eef5fb;overflow-x:hidden}
+
+    /* Background video */
+    .video-bg{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      z-index:-3;
+      pointer-events:none;
+      filter:saturate(.72) brightness(1.08) blur(.15px);
+    }
+
+    .video-overlay{
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      pointer-events:none;
+      background:
+        linear-gradient(135deg,rgba(238,245,251,.91),rgba(255,255,255,.72) 48%,rgba(232,243,253,.88)),
+        radial-gradient(circle at 80% 20%,rgba(25,118,210,.10),transparent 35%);
+    }
+
+    .video-fallback{
+      position:fixed;
+      inset:0;
+      z-index:-4;
+      background:linear-gradient(135deg,#eef5fb,#ffffff);
+    }
+
+    .app{min-height:100vh;padding:24px}
+
+    .shell{
+      width:min(1180px,100%);
+      min-height:calc(100vh - 48px);
+      margin:auto;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:8px 4px 24px;
+    }
+
+    .brand{
+      font-weight:800;
+      letter-spacing:-.03em;
+      font-size:1.05rem;
+    }
+
+    .brand span{color:var(--blue)}
+
+    .page{
+      display:none;
+      flex:1;
+      animation:fade .35s ease;
+    }
+
+    .page.active{display:flex}
+
+    #home{
+      align-items:center;
+      justify-content:center;
+      padding:40px 0 70px;
+    }
+
+    .hero{
+      width:min(760px,100%);
+      text-align:center;
+      padding:64px 48px;
+      background:rgba(255,255,255,.82);
+      border:1px solid rgba(255,255,255,.9);
+      border-radius:32px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 13px;
+      border-radius:999px;
+      background:#eaf4ff;
+      color:var(--blue-dark);
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .dot{
+      width:7px;height:7px;border-radius:50%;background:var(--blue);
+      box-shadow:0 0 0 5px rgba(25,118,210,.10);
+    }
+
+    h1{
+      margin:20px 0 12px;
+      font-size:clamp(3rem,8vw,6.5rem);
+      line-height:.9;
+      letter-spacing:-.075em;
+    }
+
+    .hero p{
+      margin:0 auto 32px;
+      max-width:560px;
+      color:var(--muted);
+      font-size:1.06rem;
+      line-height:1.7;
+    }
+
+    .btn{
+      border:0;
+      cursor:pointer;
+      border-radius:14px;
+      padding:14px 20px;
+      font:inherit;
+      font-weight:750;
+      transition:transform .2s ease,box-shadow .2s ease,background .2s ease;
+    }
+
+    .btn-primary{
+      color:white;
+      background:linear-gradient(135deg,var(--blue),#3291ed);
+      box-shadow:0 12px 28px rgba(25,118,210,.25);
+    }
+
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary:hover{box-shadow:0 16px 34px rgba(25,118,210,.32)}
+
+    #portfolio{padding:12px 0 60px}
+
+    .portfolio-wrap{width:100%}
+
+    .portfolio-head{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:24px;
+      margin-bottom:28px;
+    }
+
+    .portfolio-head h2{
+      margin:7px 0 0;
+      font-size:clamp(2rem,5vw,3.4rem);
+      letter-spacing:-.055em;
+      line-height:1;
+    }
+
+    .portfolio-head p{
+      max-width:420px;
+      margin:0;
+      color:var(--muted);
+      line-height:1.65;
+    }
+
+    .back{
+      background:rgba(255,255,255,.88);
+      color:var(--ink);
+      border:1px solid var(--line);
+    }
+
+    .projects{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:18px;
+    }
+
+    .card{
+      display:flex;
+      flex-direction:column;
+      min-height:245px;
+      padding:24px;
+      background:var(--surface);
+      border:1px solid rgba(255,255,255,.95);
+      border-radius:var(--radius);
+      box-shadow:0 12px 38px rgba(33,73,108,.10);
+      text-decoration:none;
+      color:inherit;
+      transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
+      backdrop-filter:blur(14px);
+    }
+
+    .card:hover{
+      transform:translateY(-5px);
+      box-shadow:0 20px 48px rgba(33,73,108,.16);
+      border-color:rgba(25,118,210,.22);
+    }
+
+    .number{
+      width:38px;height:38px;
+      display:grid;place-items:center;
+      border-radius:12px;
+      background:#eaf4ff;
+      color:var(--blue);
+      font-weight:850;
+      margin-bottom:24px;
+    }
+
+    .card h3{
+      margin:0 0 9px;
+      font-size:1.16rem;
+      letter-spacing:-.025em;
+    }
+
+    .card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:.92rem;
+    }
+
+    .open{
+      margin-top:auto;
+      padding-top:22px;
+      color:var(--blue);
+      font-size:.88rem;
+      font-weight:800;
+    }
+
+    footer{
+      padding:22px 4px 2px;
+      color:#7890a5;
+      font-size:.78rem;
+      text-align:center;
+    }
+
+    @keyframes fade{
+      from{opacity:0;transform:translateY(7px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    @media(max-width:850px){
+      .projects{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .portfolio-head{align-items:start;flex-direction:column}
+    }
+
+    @media(max-width:580px){
+      .app{padding:14px}
+      .shell{min-height:calc(100vh - 28px)}
+      .hero{padding:46px 24px;border-radius:25px}
+      .projects{grid-template-columns:1fr}
+      .topbar{padding-bottom:15px}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      .video-bg{display:none}
+      .page{animation:none}
+      .btn,.card{transition:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="video-fallback" aria-hidden="true"></div>
+
+  <video class="video-bg" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+    <source src="./background.mp4" type="video/mp4">
+  </video>
+
+  <div class="video-overlay" aria-hidden="true"></div>
+
+  <main class="app">
+    <div class="shell">
+      <header class="topbar">
+        <div class="brand"><span>JH.</span> Portfolio</div>
+      </header>
+
+      <section id="home" class="page active">
+        <div class="hero">
+          <div class="eyebrow"><span class="dot"></span> Selected Work</div>
+          <h1>John Hong</h1>
+          <p>
+            A collection of digital projects, guides, tools, and workflow solutions
+            designed to make information clearer and everyday processes more efficient.
+          </p>
+          <button class="btn btn-primary" onclick="showPortfolio()">
+            View My Portfolio <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="portfolio" class="page">
+        <div class="portfolio-wrap">
+          <div class="portfolio-head">
+            <div>
+              <div class="eyebrow">My Projects</div>
+              <h2>Selected Work</h2>
+            </div>
+            <div>
+              <p>Explore the projects below to view each live website, guide, or interactive tool.</p>
+              <button class="btn back" onclick="showHome()">← Back</button>
+            </div>
+          </div>
+
+          <div class="projects">
+            <a class="card" href="https://jhongdreamit.github.io/Payment-Guide-/" target="_blank" rel="noopener noreferrer">
+              <div class="number">01</div>
+              <h3>Payment Guide</h3>
+              <p>A clear, user-friendly guide for navigating payment information and required steps.</p>
+              <div class="open">Open project ↗</div>
+            </a>
+
+            <a class="card" href="https://jhongdreamit.github.io/B1-B2-COS-I-20-Guide/" target="_blank" rel="noopener noreferrer">
+              <div class="number">02</div>
+              <h3>B1/B2 COS & I-20 Guide</h3>
+              <p>Organized guidance designed to make a complex administrative process easier to understand.</p>
+              <div class="open">Open project ↗</div>
+            </a>
+
+            <a class="card" href="https://jhongdreamit.github.io/INITIAL-GUIDE/" target="_blank" rel="noopener noreferrer">
+              <div class="number">03</div>
+              <h3>Initial Guide</h3>
+              <p>An onboarding resource that presents important information in a structured, accessible format.</p>
+              <div class="open">Open project ↗</div>
+            </a>
+
+            <a class="card" href="https://jhongdreamit.github.io/I20-EXTENSION/" target="_blank" rel="noopener noreferrer">
+              <div class="number">04</div>
+              <h3>I-20 Extension</h3>
+              <p>A streamlined guide helping users understand the extension process and required documentation.</p>
+              <div class="open">Open project ↗</div>
+            </a>
+
+            <a class="card" href="https://jhongdreamit.github.io/TRANSFER-IN-GUIDE/" target="_blank" rel="noopener noreferrer">
+              <div class="number">05</div>
+              <h3>Transfer-In Guide</h3>
+              <p>An interactive checklist with organized sections, progress tracking, and multilingual support.</p>
+              <div class="open">Open project ↗</div>
+            </a>
+
+            <a class="card" href="https://jhongdreamit.github.io/Payment-Calculator/" target="_blank" rel="noopener noreferrer">
+              <div class="number">06</div>
+              <h3>Payment Calculator</h3>
+              <p>An interactive calculation tool designed to make payment estimates quick and straightforward.</p>
+              <div class="open">Open project ↗</div>
+            </a>
+          </div>
+
+          <footer>John Hong · Digital Projects &amp; Portfolio</footer>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    function showPortfolio(){
+      document.getElementById('home').classList.remove('active');
+      document.getElementById('portfolio').classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function showHome(){
+      document.getElementById('portfolio').classList.remove('active');
+      document.getElementById('home').classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    // Some browsers block autoplay until the page is interacted with.
+    // The video is muted, so autoplay is normally permitted.
+    const bgVideo = document.querySelector('.video-bg');
+    bgVideo.play().catch(() => {
+      const start = () => {
+        bgVideo.play().catch(() => {});
+        window.removeEventListener('pointerdown', start);
+        window.removeEventListener('keydown', start);
+      };
+      window.addEventListener('pointerdown', start, {once:true});
+      window.addEventListener('keydown', start, {once:true});
+    });
+  </script>
+</body>
+</html>
