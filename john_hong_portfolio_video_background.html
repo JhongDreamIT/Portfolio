@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>John Hong | Portfolio</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #eef5fb;
+      --surface: rgba(255, 255, 255, 0.94);
+      --surface-strong: #ffffff;
+      --border: #dbe7f0;
+      --text: #17212b;
+      --muted: #647483;
+      --accent: #1976d2;
+      --accent-dark: #125ca6;
+      --soft-blue: #eaf4ff;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* Full-screen MP4 background */
+    .video-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      pointer-events: none;
+      filter: saturate(0.85) brightness(0.88);
+      transform: scale(1.02);
+    }
+
+    .video-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(238, 245, 251, 0.72), rgba(238, 245, 251, 0.88)),
+        linear-gradient(180deg, rgba(255,255,255,0.10), rgba(226,238,248,0.20));
+      backdrop-filter: blur(1px);
+    }
+
+    /* Landing screen */
+    .landing {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 32px;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      position: relative;
+    }
+
+    .landing.hide {
+      opacity: 0;
+      transform: scale(0.97);
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero {
+      width: min(900px, 100%);
+      text-align: center;
+      padding: clamp(42px, 7vw, 78px);
+      background: rgba(255,255,255,0.88);
+      border: 1px solid rgba(255,255,255,0.95);
+      border-radius: 30px;
+      box-shadow: 0 28px 80px rgba(39, 71, 99, 0.18);
+      backdrop-filter: blur(12px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      color: var(--accent-dark);
+      background: var(--soft-blue);
+      border: 1px solid #cfe5f8;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(3rem, 9vw, 7rem);
+      line-height: 0.95;
+      letter-spacing: -0.065em;
+      margin-bottom: 24px;
+      color: #15212c;
+    }
+
+    .intro {
+      max-width: 620px;
+      margin: 0 auto 38px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .open-btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 15px 25px;
+      color: white;
+      background: var(--accent);
+      font-size: 0.96rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 28px rgba(25, 118, 210, 0.24);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .open-btn:hover {
+      transform: translateY(-3px);
+      background: var(--accent-dark);
+      box-shadow: 0 15px 35px rgba(25, 118, 210, 0.30);
+    }
+
+    /* Portfolio screen */
+    .portfolio {
+      display: none;
+      min-height: 100vh;
+      padding: 30px 24px 70px;
+    }
+
+    .portfolio.show {
+      display: block;
+      animation: reveal 0.55s ease both;
+    }
+
+    @keyframes reveal {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .portfolio-inner {
+      width: min(1100px, 100%);
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 55px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.90);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(39, 71, 99, 0.08);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--accent-dark);
+    }
+
+    .back-btn {
+      border: 1px solid var(--border);
+      background: var(--surface-strong);
+      color: var(--text);
+      padding: 9px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: var(--soft-blue);
+      border-color: #bddbf2;
+    }
+
+    .portfolio-header {
+      margin-bottom: 40px;
+    }
+
+    .portfolio-header h2 {
+      font-size: clamp(2.4rem, 6vw, 4.5rem);
+      letter-spacing: -0.055em;
+      margin-bottom: 14px;
+      color: #15212c;
+    }
+
+    .portfolio-header p {
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 650px;
+    }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .project {
+      position: relative;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--surface);
+      text-decoration: none;
+      color: var(--text);
+      overflow: hidden;
+      box-shadow: 0 10px 28px rgba(39, 71, 99, 0.08);
+      transition: transform 0.25s ease, box-shadow 0.25s ease,
+        border-color 0.25s ease;
+    }
+
+    .project::before {
+      content: "";
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      right: -75px;
+      top: -75px;
+      border-radius: 50%;
+      background: #eaf4ff;
+    }
+
+    .project:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 40px rgba(39, 71, 99, 0.14);
+      border-color: #b8d8ef;
+    }
+
+    .number {
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+    }
+
+    .project h3 {
+      font-size: 1.35rem;
+      letter-spacing: -0.025em;
+      margin: 18px 0 8px;
+    }
+
+    .project p {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      max-width: 450px;
+    }
+
+    .visit {
+      margin-top: 28px;
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    @media (max-width: 720px) {
+      .projects {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        margin-bottom: 50px;
+      }
+
+      .project {
+        min-height: 190px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Uploaded MP4 background video -->
+  <video class="video-bg" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+    <source src="Writing_60fps(1).mp4" type="video/mp4" />
+  </video>
+  <div class="video-overlay"></div>
+
+  <!-- Landing Page -->
+  <main class="landing" id="landing">
+    <section class="hero">
+      <div class="eyebrow">Portfolio</div>
+      <h1>John Hong</h1>
+      <p class="intro">
+        A collection of interactive digital projects, guides, tools, and
+        web experiences I've created.
+      </p>
+
+      <button class="open-btn" id="openPortfolio">
+        View My Portfolio →
+      </button>
+    </section>
+  </main>
+
+  <!-- Portfolio Page -->
+  <main class="portfolio" id="portfolio">
+    <div class="portfolio-inner">
+
+      <nav class="topbar">
+        <div class="brand">JH.</div>
+        <button class="back-btn" id="backButton">← Back</button>
+      </nav>
+
+      <header class="portfolio-header">
+        <div class="eyebrow">Selected Work</div>
+        <h2>My Projects</h2>
+        <p>
+          Explore the interactive websites and tools I've designed and built.
+          Click any project to open it in a new tab.
+        </p>
+      </header>
+
+      <section class="projects">
+
+        <a class="project"
+           href="https://jhongdreamit.github.io/Payment-Guide-/"
+           target="_blank"
+           rel="noopener noreferrer">
+          <div>
+            <div class="number">01</div>
+            <h3>Payment Guide</h3>
+            <p>Interactive payment information and guidance experience.</p>
+          </div>
+          <div class="visit">Open Project ↗</div>
+        </a>
+
+        <a class="project"
+           href="https://jhongdreamit.github.io/B1-B2-COS-I-20-Guide/"
+           target="_blank"
+           rel="noopener noreferrer">
+          <div>
+            <div class="number">02</div>
+            <h3>B1 / B2 / COS / I-20 Guide</h3>
+            <p>Interactive student transfer and documentation guide.</p>
+          </div>
+          <div class="visit">Open Project ↗</div>
+        </a>
+
+        <a class="project"
+           href="https://jhongdreamit.github.io/INITIAL-GUIDE/"
+           target="_blank"
+           rel="noopener noreferrer">
+          <div>
+            <div class="number">03</div>
+            <h3>Initial Guide</h3>
+            <p>A structured onboarding and information guide.</p>
+          </div>
+          <div class="visit">Open Project ↗</div>
+        </a>
+
+        <a class="project"
+           href="https://jhongdreamit.github.io/I20-EXTENSION/"
+           target="_blank"
+           rel="noopener noreferrer">
+          <div>
+            <div class="number">04</div>
+            <h3>I-20 Extension</h3>
+            <p>Interactive information and process guide for I-20 extensions.</p>
+          </div>
+          <div class="visit">Open Project ↗</div>
+        </a>
+
+        <a class="project"
+           href="https://jhongdreamit.github.io/TRANSFER-IN-GUIDE/"
+           target="_blank"
+           rel="noopener noreferrer">
+          <div>
+            <div class="number">05</div>
+            <h3>Transfer-In Guide</h3>
+            <p>Step-by-step interactive guide for transfer students.</p>
+          </div>
+          <div class="visit">Open Project ↗</div>
+        </a>
+
+        <a class="project"
+           href="https://jhongdreamit.github.io/Payment-Calculator/"
+           target="_blank"
+           rel="noopener noreferrer">
+          <div>
+            <div class="number">06</div>
+            <h3>Payment Calculator</h3>
+            <p>Interactive calculator designed to simplify payment planning.</p>
+          </div>
+          <div class="visit">Open Project ↗</div>
+        </a>
+
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const landing = document.getElementById("landing");
+    const portfolio = document.getElementById("portfolio");
+    const openPortfolio = document.getElementById("openPortfolio");
+    const backButton = document.getElementById("backButton");
+
+    openPortfolio.addEventListener("click", () => {
+      landing.classList.add("hide");
+      setTimeout(() => {
+        portfolio.classList.add("show");
+      }, 250);
+    });
+
+    backButton.addEventListener("click", () => {
+      portfolio.classList.remove("show");
+      setTimeout(() => {
+        landing.classList.remove("hide");
+      }, 150);
+    });
+  </script>
+
+</body>
+</html>
