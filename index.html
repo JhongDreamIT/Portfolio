@@ -3,395 +3,548 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#eef5fb">
-  <title>John Hong | Portfolio</title>
+  <meta name="theme-color" content="#EAE8E3">
+  <title>John Hong | Selected Works</title>
+  
+  <!-- Importing artistic/editorial fonts: Syne (Display) and Space Grotesk (Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+
   <style>
-    :root{
-      --blue:#1976d2;
-      --blue-dark:#125ca6;
-      --ink:#16324f;
-      --muted:#61758a;
-      --surface:rgba(255,255,255,.94);
-      --line:rgba(25,118,210,.13);
-      --shadow:0 18px 55px rgba(33,73,108,.14);
-      --radius:24px;
+    :root {
+      /* Expressive, high-contrast palette */
+      --bg: #EAE8E3;
+      --fg: #111111;
+      --accent: #FF3C00; /* Vibrant Orange */
+      --accent-glow: #C4FF00; /* Neon Lime */
+      --muted: #7A7A75;
+      --border: #111111;
+      
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'Space Grotesk', sans-serif;
     }
 
-    *{box-sizing:border-box}
-    html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
-    body{background:#eef5fb;overflow-x:hidden}
-
-    /* Background video */
-    .video-bg{
-      position:fixed;
-      inset:0;
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      z-index:-3;
-      pointer-events:none;
-      filter:saturate(.72) brightness(1.08) blur(.15px);
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    .video-overlay{
-      position:fixed;
-      inset:0;
-      z-index:-2;
-      pointer-events:none;
-      background:
-        linear-gradient(135deg,rgba(238,245,251,.91),rgba(255,255,255,.72) 48%,rgba(232,243,253,.88)),
-        radial-gradient(circle at 80% 20%,rgba(25,118,210,.10),transparent 35%);
+    html, body {
+      min-height: 100%;
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    .video-fallback{
-      position:fixed;
-      inset:0;
-      z-index:-4;
-      background:linear-gradient(135deg,#eef5fb,#ffffff);
+    .video-container {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      pointer-events: none;
+      background: var(--bg);
+      overflow: hidden;
     }
 
-    .app{min-height:100vh;padding:24px}
-
-    .shell{
-      width:min(1180px,100%);
-      min-height:calc(100vh - 48px);
-      margin:auto;
-      display:flex;
-      flex-direction:column;
+    .video-bg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* Artistic treatment: desaturated, high contrast, subtle blend */
+      filter: grayscale(100%) contrast(150%) brightness(0.8);
+      opacity: 0.12;
+      mix-blend-mode: multiply;
     }
 
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:8px 4px 24px;
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      /* Grain texture for an editorial print feel */
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.05;
+      mix-blend-mode: overlay;
     }
 
-    .brand{
-      font-weight:800;
-      letter-spacing:-.03em;
-      font-size:1.05rem;
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    .brand span{color:var(--blue)}
-
-    .page{
-      display:none;
-      flex:1;
-      animation:fade .35s ease;
+    .shell {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem 4vw;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
     }
 
-    .page.active{display:flex}
-
-    #home{
-      align-items:center;
-      justify-content:center;
-      padding:40px 0 70px;
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0 3rem;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 4rem;
     }
 
-    .hero{
-      width:min(760px,100%);
-      text-align:center;
-      padding:64px 48px;
-      background:rgba(255,255,255,.82);
-      border:1px solid rgba(255,255,255,.9);
-      border-radius:32px;
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(18px);
+    .brand {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      cursor: pointer;
     }
 
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 13px;
-      border-radius:999px;
-      background:#eaf4ff;
-      color:var(--blue-dark);
-      font-size:.78rem;
-      font-weight:800;
-      letter-spacing:.08em;
-      text-transform:uppercase;
+    .brand span {
+      color: var(--accent);
     }
 
-    .dot{
-      width:7px;height:7px;border-radius:50%;background:var(--blue);
-      box-shadow:0 0 0 5px rgba(25,118,210,.10);
+    .page {
+      display: none;
+      flex: 1;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                  transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    h1{
-      margin:20px 0 12px;
-      font-size:clamp(3rem,8vw,6.5rem);
-      line-height:.9;
-      letter-spacing:-.075em;
+    .page.active {
+      display: flex;
+      flex-direction: column;
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    .hero p{
-      margin:0 auto 32px;
-      max-width:560px;
-      color:var(--muted);
-      font-size:1.06rem;
-      line-height:1.7;
+    #home {
+      justify-content: center;
+      padding-bottom: 5rem;
     }
 
-    .btn{
-      border:0;
-      cursor:pointer;
-      border-radius:14px;
-      padding:14px 20px;
-      font:inherit;
-      font-weight:750;
-      transition:transform .2s ease,box-shadow .2s ease,background .2s ease;
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
     }
 
-    .btn-primary{
-      color:white;
-      background:linear-gradient(135deg,var(--blue),#3291ed);
-      box-shadow:0 12px 28px rgba(25,118,210,.25);
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
     }
 
-    .btn:hover{transform:translateY(-2px)}
-    .btn-primary:hover{box-shadow:0 16px 34px rgba(25,118,210,.32)}
-
-    #portfolio{padding:12px 0 60px}
-
-    .portfolio-wrap{width:100%}
-
-    .portfolio-head{
-      display:flex;
-      align-items:end;
-      justify-content:space-between;
-      gap:24px;
-      margin-bottom:28px;
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 12vw, 11rem);
+      font-weight: 800;
+      line-height: 0.85;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      color: var(--fg);
     }
 
-    .portfolio-head h2{
-      margin:7px 0 0;
-      font-size:clamp(2rem,5vw,3.4rem);
-      letter-spacing:-.055em;
-      line-height:1;
+    .hero-title span {
+      display: block;
+      -webkit-text-stroke: 2px var(--fg);
+      color: transparent;
+      transition: color 0.4s ease;
     }
 
-    .portfolio-head p{
-      max-width:420px;
-      margin:0;
-      color:var(--muted);
-      line-height:1.65;
+    .hero-title:hover span {
+      color: var(--fg);
     }
 
-    .back{
-      background:rgba(255,255,255,.88);
-      color:var(--ink);
-      border:1px solid var(--line);
+    .hero-desc {
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      max-width: 600px;
+      line-height: 1.5;
+      color: var(--muted);
+      margin-bottom: 3rem;
+      font-weight: 500;
     }
 
-    .projects{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:18px;
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.2rem 2.5rem;
+      background: var(--fg);
+      color: var(--bg);
+      border: 2px solid var(--fg);
+      border-radius: 999px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .card{
-      display:flex;
-      flex-direction:column;
-      min-height:245px;
-      padding:24px;
-      background:var(--surface);
-      border:1px solid rgba(255,255,255,.95);
-      border-radius:var(--radius);
-      box-shadow:0 12px 38px rgba(33,73,108,.10);
-      text-decoration:none;
-      color:inherit;
-      transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
-      backdrop-filter:blur(14px);
+    .btn:hover {
+      background: var(--accent-glow);
+      color: var(--fg);
+      border-color: var(--accent-glow);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 0 var(--fg);
     }
 
-    .card:hover{
-      transform:translateY(-5px);
-      box-shadow:0 20px 48px rgba(33,73,108,.16);
-      border-color:rgba(25,118,210,.22);
+    .btn.back-btn {
+      background: transparent;
+      color: var(--fg);
+      padding: 0.8rem 1.5rem;
+      font-size: 0.9rem;
     }
 
-    .number{
-      width:38px;height:38px;
-      display:grid;place-items:center;
-      border-radius:12px;
-      background:#eaf4ff;
-      color:var(--blue);
-      font-weight:850;
-      margin-bottom:24px;
+    .btn.back-btn:hover {
+      background: var(--fg);
+      color: var(--bg);
+      box-shadow: 4px 4px 0 var(--accent);
+      transform: translate(-2px, -2px);
     }
 
-    .card h3{
-      margin:0 0 9px;
-      font-size:1.16rem;
-      letter-spacing:-.025em;
+    #portfolio {
+      padding-bottom: 6rem;
     }
 
-    .card p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.55;
-      font-size:.92rem;
+    .portfolio-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+      flex-wrap: wrap;
+      gap: 2rem;
     }
 
-    .open{
-      margin-top:auto;
-      padding-top:22px;
-      color:var(--blue);
-      font-size:.88rem;
-      font-weight:800;
+    .portfolio-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 6vw, 5rem);
+      line-height: 0.9;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
     }
 
-    footer{
-      padding:22px 4px 2px;
-      color:#7890a5;
-      font-size:.78rem;
-      text-align:center;
+    .project-list {
+      display: flex;
+      flex-direction: column;
+      border-top: 2px solid var(--border);
     }
 
-    @keyframes fade{
-      from{opacity:0;transform:translateY(7px)}
-      to{opacity:1;transform:translateY(0)}
+    .project-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 2rem;
+      padding: 2.5rem 0;
+      border-bottom: 2px solid var(--border);
+      text-decoration: none;
+      color: var(--fg);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
     }
 
-    @media(max-width:850px){
-      .projects{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .portfolio-head{align-items:start;flex-direction:column}
+    .project-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--fg);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
     }
 
-    @media(max-width:580px){
-      .app{padding:14px}
-      .shell{min-height:calc(100vh - 28px)}
-      .hero{padding:46px 24px;border-radius:25px}
-      .projects{grid-template-columns:1fr}
-      .topbar{padding-bottom:15px}
+    .project-item:hover {
+      padding-left: 2rem;
+      padding-right: 2rem;
+      color: var(--bg);
     }
 
-    @media(prefers-reduced-motion:reduce){
-      .video-bg{display:none}
-      .page{animation:none}
-      .btn,.card{transition:none}
+    .project-item:hover::before {
+      transform: scaleY(1);
+      transform-origin: top;
+    }
+
+    .project-number {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--muted);
+      transition: color 0.3s ease;
+    }
+
+    .project-item:hover .project-number {
+      color: var(--accent-glow);
+    }
+
+    .project-info h3 {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+
+    .project-info p {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 500px;
+      transition: color 0.3s ease;
+    }
+
+    .project-item:hover .project-info p {
+      color: #A0A0A0;
+    }
+
+    .project-link {
+      font-size: 2rem;
+      transform: rotate(-45deg);
+      transition: all 0.3s ease;
+    }
+
+    .project-item:hover .project-link {
+      color: var(--accent-glow);
+      transform: rotate(0deg) scale(1.2);
+    }
+
+    footer {
+      margin-top: 6rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(17, 17, 17, 0.1);
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    @media (max-width: 900px) {
+      .project-item {
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+        gap: 1rem;
+        padding: 2rem 0;
+      }
+      .project-number {
+        grid-column: 1 / -1;
+        font-size: 1rem;
+      }
+      .project-item:hover {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .topbar {
+        padding-bottom: 2rem;
+        margin-bottom: 2rem;
+      }
+      .hero-title {
+        margin-bottom: 1rem;
+      }
+      .portfolio-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      footer {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .page { transition: none; }
+      .project-item, .project-item::before, .btn { transition: none; }
     }
   </style>
 </head>
 <body>
-  <div class="video-fallback" aria-hidden="true"></div>
-
-  <video class="video-bg" autoplay muted loop playsinline preload="auto" aria-hidden="true">
-    <source src="./background.mp4" type="video/mp4">
-  </video>
-
-  <div class="video-overlay" aria-hidden="true"></div>
+  <div class="video-container" aria-hidden="true">
+    <video class="video-bg" autoplay muted loop playsinline preload="auto">
+      <source src="./background.mp4" type="video/mp4">
+    </video>
+    <div class="noise-overlay"></div>
+  </div>
 
   <main class="app">
     <div class="shell">
       <header class="topbar">
-        <div class="brand"><span>JH.</span> Portfolio</div>
+        <div class="brand" onclick="showHome()" role="button" tabindex="0">
+          <span>JH</span>.Works
+        </div>
+        <div style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">
+          System / Guides
+        </div>
       </header>
 
       <section id="home" class="page active">
-        <div class="hero">
-          <div class="eyebrow"><span class="dot"></span> Selected Work</div>
-          <h1>John Hong</h1>
-          <p>
-            A collection of digital projects, guides, tools, and workflow solutions
-            designed to make information clearer and everyday processes more efficient.
-          </p>
-          <button class="btn btn-primary" onclick="showPortfolio()">
-            View My Portfolio <span aria-hidden="true">→</span>
+        <div class="hero-eyebrow">Digital Workflows & Tools</div>
+        <h1 class="hero-title">
+          John<span>Hong</span>
+        </h1>
+        <p class="hero-desc">
+          A collection of digital projects, intuitive guides, and workflow solutions designed to bring clarity to complex processes.
+        </p>
+        <div>
+          <button class="btn" onclick="showPortfolio()">
+            Explore Index <span>↘</span>
           </button>
         </div>
       </section>
 
       <section id="portfolio" class="page">
-        <div class="portfolio-wrap">
-          <div class="portfolio-head">
-            <div>
-              <div class="eyebrow">My Projects</div>
-              <h2>Selected Work</h2>
-            </div>
-            <div>
-              <p>Explore the projects below to view each live website, guide, or interactive tool.</p>
-              <button class="btn back" onclick="showHome()">← Back</button>
-            </div>
-          </div>
+        <div class="portfolio-header">
+          <h2>Selected<br>Projects</h2>
+          <button class="btn back-btn" onclick="showHome()">← Return</button>
+        </div>
 
-          <div class="projects">
-            <a class="card" href="https://jhongdreamit.github.io/Payment-Guide-/" target="_blank" rel="noopener noreferrer">
-              <div class="number">01</div>
+        <div class="project-list">
+          <!-- Item 01 -->
+          <a class="project-item" href="https://jhongdreamit.github.io/Payment-Guide-/" target="_blank" rel="noopener noreferrer">
+            <div class="project-number">01 //</div>
+            <div class="project-info">
               <h3>Payment Guide</h3>
               <p>A clear, user-friendly guide for navigating payment information and required steps.</p>
-              <div class="open">Open project ↗</div>
-            </a>
+            </div>
+            <div class="project-link">→</div>
+          </a>
 
-            <a class="card" href="https://jhongdreamit.github.io/B1-B2-COS-I-20-Guide/" target="_blank" rel="noopener noreferrer">
-              <div class="number">02</div>
-              <h3>B1/B2 COS & I-20 Guide</h3>
+          <!-- Item 02 -->
+          <a class="project-item" href="https://jhongdreamit.github.io/B1-B2-COS-I-20-Guide/" target="_blank" rel="noopener noreferrer">
+            <div class="project-number">02 //</div>
+            <div class="project-info">
+              <h3>B1/B2 COS & I-20</h3>
               <p>Organized guidance designed to make a complex administrative process easier to understand.</p>
-              <div class="open">Open project ↗</div>
-            </a>
+            </div>
+            <div class="project-link">→</div>
+          </a>
 
-            <a class="card" href="https://jhongdreamit.github.io/INITIAL-GUIDE/" target="_blank" rel="noopener noreferrer">
-              <div class="number">03</div>
+          <!-- Item 03 -->
+          <a class="project-item" href="https://jhongdreamit.github.io/INITIAL-GUIDE/" target="_blank" rel="noopener noreferrer">
+            <div class="project-number">03 //</div>
+            <div class="project-info">
               <h3>Initial Guide</h3>
               <p>An onboarding resource that presents important information in a structured, accessible format.</p>
-              <div class="open">Open project ↗</div>
-            </a>
+            </div>
+            <div class="project-link">→</div>
+          </a>
 
-            <a class="card" href="https://jhongdreamit.github.io/I20-EXTENSION/" target="_blank" rel="noopener noreferrer">
-              <div class="number">04</div>
+          <!-- Item 04 -->
+          <a class="project-item" href="https://jhongdreamit.github.io/I20-EXTENSION/" target="_blank" rel="noopener noreferrer">
+            <div class="project-number">04 //</div>
+            <div class="project-info">
               <h3>I-20 Extension</h3>
               <p>A streamlined guide helping users understand the extension process and required documentation.</p>
-              <div class="open">Open project ↗</div>
-            </a>
+            </div>
+            <div class="project-link">→</div>
+          </a>
 
-            <a class="card" href="https://jhongdreamit.github.io/TRANSFER-IN-GUIDE/" target="_blank" rel="noopener noreferrer">
-              <div class="number">05</div>
+          <!-- Item 05 -->
+          <a class="project-item" href="https://jhongdreamit.github.io/TRANSFER-IN-GUIDE/" target="_blank" rel="noopener noreferrer">
+            <div class="project-number">05 //</div>
+            <div class="project-info">
               <h3>Transfer-In Guide</h3>
               <p>An interactive checklist with organized sections, progress tracking, and multilingual support.</p>
-              <div class="open">Open project ↗</div>
-            </a>
+            </div>
+            <div class="project-link">→</div>
+          </a>
 
-            <a class="card" href="https://jhongdreamit.github.io/Payment-Calculator/" target="_blank" rel="noopener noreferrer">
-              <div class="number">06</div>
+          <!-- Item 06 -->
+          <a class="project-item" href="https://jhongdreamit.github.io/Payment-Calculator/" target="_blank" rel="noopener noreferrer">
+            <div class="project-number">06 //</div>
+            <div class="project-info">
               <h3>Payment Calculator</h3>
               <p>An interactive calculation tool designed to make payment estimates quick and straightforward.</p>
-              <div class="open">Open project ↗</div>
-            </a>
-          </div>
-
-          <footer>John Hong · Digital Projects &amp; Portfolio</footer>
+            </div>
+            <div class="project-link">→</div>
+          </a>
         </div>
+
+        <footer>
+          <div>© 2026 John Hong</div>
+          <div>All Rights Reserved</div>
+        </footer>
       </section>
     </div>
   </main>
 
   <script>
-    function showPortfolio(){
-      document.getElementById('home').classList.remove('active');
-      document.getElementById('portfolio').classList.add('active');
-      window.scrollTo({top:0, behavior:'smooth'});
+    function showPortfolio() {
+      const home = document.getElementById('home');
+      const portfolio = document.getElementById('portfolio');
+      
+      home.style.opacity = '0';
+      home.style.transform = 'translateY(-20px)';
+      
+      setTimeout(() => {
+        home.classList.remove('active');
+        portfolio.classList.add('active');
+        
+        // Trigger reflow for animation
+        void portfolio.offsetWidth;
+        
+        portfolio.style.opacity = '1';
+        portfolio.style.transform = 'translateY(0)';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 400); // Matches CSS transition timing
     }
 
-    function showHome(){
-      document.getElementById('portfolio').classList.remove('active');
-      document.getElementById('home').classList.add('active');
-      window.scrollTo({top:0, behavior:'smooth'});
+    function showHome() {
+      const home = document.getElementById('home');
+      const portfolio = document.getElementById('portfolio');
+      
+      portfolio.style.opacity = '0';
+      portfolio.style.transform = 'translateY(20px)';
+      
+      setTimeout(() => {
+        portfolio.classList.remove('active');
+        home.classList.add('active');
+        
+        // Trigger reflow for animation
+        void home.offsetWidth;
+        
+        home.style.opacity = '1';
+        home.style.transform = 'translateY(0)';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 400);
     }
 
-    // Some browsers block autoplay until the page is interacted with.
-    // The video is muted, so autoplay is normally permitted.
+    // Video Autoplay Fallback Handling
     const bgVideo = document.querySelector('.video-bg');
-    bgVideo.play().catch(() => {
-      const start = () => {
-        bgVideo.play().catch(() => {});
-        window.removeEventListener('pointerdown', start);
-        window.removeEventListener('keydown', start);
-      };
-      window.addEventListener('pointerdown', start, {once:true});
-      window.addEventListener('keydown', start, {once:true});
-    });
+    if (bgVideo) {
+      bgVideo.play().catch(() => {
+        const start = () => {
+          bgVideo.play().catch(() => {});
+          window.removeEventListener('pointerdown', start);
+          window.removeEventListener('keydown', start);
+        };
+        window.addEventListener('pointerdown', start, { once: true });
+        window.addEventListener('keydown', start, { once: true });
+      });
+    }
   </script>
 </body>
 </html>
