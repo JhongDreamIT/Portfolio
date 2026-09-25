@@ -1,490 +1,1097 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <meta name="theme-color" content="#EAE8E3">
+
   <title>John Hong | Selected Works</title>
+
   
+
+  <!-- Importing artistic/editorial fonts: Syne (Display) and Space Grotesk (Body) -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
+
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
 
+
+
   <style>
+
     :root {
+
+      /* Expressive, high-contrast palette */
+
       --bg: #EAE8E3;
+
       --fg: #111111;
-      --accent: #FF3C00;
-      --accent-glow: #C4FF00;
+
+      --accent: #FF3C00; /* Vibrant Orange */
+
+      --accent-glow: #C4FF00; /* Neon Lime */
+
       --muted: #7A7A75;
+
       --border: #111111;
+
+      
+
       --font-display: 'Syne', sans-serif;
+
       --font-body: 'Space Grotesk', sans-serif;
+
     }
+
+
 
     * {
+
       box-sizing: border-box;
+
       margin: 0;
+
       padding: 0;
+
     }
+
+
 
     html, body {
+
       min-height: 100%;
+
       background-color: var(--bg);
+
       color: var(--fg);
+
       font-family: var(--font-body);
+
       overflow-x: hidden;
+
       -webkit-font-smoothing: antialiased;
+
       -moz-osx-font-smoothing: grayscale;
+
     }
+
+
 
     .video-container {
+
       position: fixed;
+
       inset: 0;
+
       z-index: -3;
+
       pointer-events: none;
+
       background: var(--bg);
+
       overflow: hidden;
+
     }
+
+
 
     .video-bg {
+
       width: 100%;
+
       height: 100%;
+
       object-fit: cover;
+
+      /* Heavy blur softens hard shapes (like the black circle) so they don't clash with text */
+
       filter: blur(12px) opacity(0.35) saturate(1.5);
+
     }
+
+
 
     .noise-overlay {
+
       position: fixed;
+
       inset: 0;
+
       z-index: -2;
+
       pointer-events: none;
+
+      /* Semi-transparent wash of the background color to guarantee text legibility */
+
       background-color: rgba(234, 232, 227, 0.75);
+
+      /* Grain texture for an editorial print feel */
+
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+
     }
+
+
 
     .app {
+
       min-height: 100vh;
+
       display: flex;
+
       flex-direction: column;
+
     }
+
+
 
     .shell {
+
       width: 100%;
+
       max-width: 1400px;
+
       margin: 0 auto;
+
       padding: 2rem 4vw;
+
       display: flex;
+
       flex-direction: column;
+
       flex: 1;
+
     }
+
+
 
     .topbar {
+
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
+
       padding: 1rem 0 3rem;
+
       border-bottom: 2px solid var(--border);
+
       margin-bottom: 4rem;
+
     }
+
+
 
     .brand {
+
       font-family: var(--font-display);
+
       font-weight: 800;
+
       font-size: 1.5rem;
+
       text-transform: uppercase;
+
       letter-spacing: -0.02em;
+
       cursor: pointer;
+
     }
+
+
 
     .brand span {
+
       color: var(--accent);
+
     }
+
+
 
     .page {
+
       display: none;
+
       flex: 1;
+
       opacity: 0;
+
       transform: translateY(20px);
+
       transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+
                   transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
     }
+
+
 
     .page.active {
+
       display: flex;
+
       flex-direction: column;
+
       opacity: 1;
+
       transform: translateY(0);
+
     }
+
+
 
     #home {
+
       justify-content: center;
+
       padding-bottom: 5rem;
+
     }
+
+
 
     .hero-eyebrow {
+
       font-family: var(--font-body);
+
       font-size: 0.85rem;
+
       font-weight: 700;
+
       text-transform: uppercase;
+
       letter-spacing: 0.1em;
+
       margin-bottom: 1.5rem;
+
       display: inline-flex;
+
       align-items: center;
+
       gap: 0.75rem;
+
     }
+
+
 
     .hero-eyebrow::before {
+
       content: '';
+
       display: block;
+
       width: 40px;
+
       height: 2px;
+
       background: var(--accent);
+
     }
+
+
 
     .hero-title {
+
       font-family: var(--font-display);
+
       font-size: clamp(4rem, 12vw, 11rem);
+
       font-weight: 800;
+
       line-height: 0.85;
+
       letter-spacing: -0.04em;
+
       text-transform: uppercase;
+
       margin-bottom: 2rem;
+
       color: var(--fg);
+
     }
+
+
 
     .hero-title span {
+
       display: block;
+
       -webkit-text-stroke: 2px var(--fg);
+
       color: transparent;
+
       transition: color 0.4s ease;
+
     }
+
+
 
     .hero-title:hover span {
+
       color: var(--fg);
+
     }
+
+
 
     .hero-desc {
+
       font-size: clamp(1.1rem, 2vw, 1.5rem);
+
       max-width: 600px;
+
       line-height: 1.5;
+
       color: var(--muted);
+
       margin-bottom: 3rem;
+
       font-weight: 500;
+
     }
+
+
 
     .btn {
+
       display: inline-flex;
+
       align-items: center;
+
       gap: 1rem;
+
       padding: 1.2rem 2.5rem;
+
       background: var(--fg);
+
       color: var(--bg);
+
       border: 2px solid var(--fg);
+
       border-radius: 999px;
+
       font-family: var(--font-body);
+
       font-size: 1rem;
+
       font-weight: 700;
+
       text-transform: uppercase;
+
       letter-spacing: 0.05em;
+
       cursor: pointer;
+
       text-decoration: none;
+
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
     }
+
+
 
     .btn:hover {
+
       background: var(--accent-glow);
+
       color: var(--fg);
+
       border-color: var(--accent-glow);
+
       transform: translateY(-4px);
+
       box-shadow: 0 10px 0 var(--fg);
+
     }
+
+
 
     .btn.back-btn {
+
       background: transparent;
+
       color: var(--fg);
+
       padding: 0.8rem 1.5rem;
+
       font-size: 0.9rem;
+
     }
+
+
 
     .btn.back-btn:hover {
+
       background: var(--fg);
+
       color: var(--bg);
+
       box-shadow: 4px 4px 0 var(--accent);
+
       transform: translate(-2px, -2px);
+
     }
+
+
 
     #portfolio {
+
       padding-bottom: 6rem;
+
     }
+
+
 
     .portfolio-header {
+
       display: flex;
+
       justify-content: space-between;
+
       align-items: flex-end;
+
       margin-bottom: 4rem;
+
       flex-wrap: wrap;
+
       gap: 2rem;
+
     }
+
+
 
     .portfolio-header h2 {
+
       font-family: var(--font-display);
+
       font-size: clamp(3rem, 6vw, 5rem);
+
       line-height: 0.9;
+
       letter-spacing: -0.03em;
+
       text-transform: uppercase;
+
     }
+
+
 
     .project-list {
+
       display: flex;
+
       flex-direction: column;
+
       border-top: 2px solid var(--border);
+
     }
+
+
 
     .project-item {
+
       display: grid;
+
       grid-template-columns: auto 1fr auto;
+
       align-items: center;
+
       gap: 2rem;
+
       padding: 2.5rem 0;
+
       border-bottom: 2px solid var(--border);
+
       text-decoration: none;
+
       color: var(--fg);
+
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
       position: relative;
+
       overflow: hidden;
+
     }
+
+
 
     .project-item::before {
+
       content: '';
+
       position: absolute;
+
       inset: 0;
+
       background: var(--fg);
+
       transform: scaleY(0);
+
       transform-origin: bottom;
+
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
       z-index: -1;
+
     }
+
+
 
     .project-item:hover {
+
       padding-left: 2rem;
+
       padding-right: 2rem;
+
       color: var(--bg);
+
     }
+
+
 
     .project-item:hover::before {
+
       transform: scaleY(1);
+
       transform-origin: top;
+
     }
+
+
 
     .project-number {
+
       font-family: var(--font-display);
+
       font-size: 1.5rem;
+
       font-weight: 800;
+
       color: var(--muted);
+
       transition: color 0.3s ease;
+
     }
+
+
 
     .project-item:hover .project-number {
+
       color: var(--accent-glow);
+
     }
+
+
 
     .project-info h3 {
+
       font-family: var(--font-display);
+
       font-size: clamp(1.5rem, 3vw, 2.5rem);
+
       margin-bottom: 0.5rem;
+
       text-transform: uppercase;
+
     }
+
+
 
     .project-info p {
+
       font-size: 1rem;
+
       color: var(--muted);
+
       max-width: 500px;
+
       transition: color 0.3s ease;
+
     }
+
+
 
     .project-item:hover .project-info p {
+
       color: #A0A0A0;
+
     }
+
+
 
     .project-link {
+
       font-size: 2rem;
+
       transform: rotate(-45deg);
+
       transition: all 0.3s ease;
+
     }
+
+
 
     .project-item:hover .project-link {
+
       color: var(--accent-glow);
+
       transform: rotate(0deg) scale(1.2);
+
     }
+
+
 
     footer {
+
       margin-top: 6rem;
+
       padding-top: 2rem;
+
       border-top: 1px solid rgba(17, 17, 17, 0.1);
+
       display: flex;
+
       justify-content: space-between;
+
       font-size: 0.85rem;
+
       font-weight: 500;
+
       color: var(--muted);
+
       text-transform: uppercase;
+
       letter-spacing: 0.05em;
+
     }
+
+
 
     @media (max-width: 900px) {
+
       .project-item {
+
         grid-template-columns: 1fr auto;
+
         grid-template-rows: auto auto;
+
         gap: 1rem;
+
         padding: 2rem 0;
+
       }
+
       .project-number {
+
         grid-column: 1 / -1;
+
         font-size: 1rem;
+
       }
+
       .project-item:hover {
+
         padding-left: 1rem;
+
         padding-right: 1rem;
+
       }
+
     }
+
+
 
     @media (max-width: 600px) {
+
       .topbar {
+
         padding-bottom: 2rem;
+
         margin-bottom: 2rem;
+
       }
+
       .hero-title {
+
         margin-bottom: 1rem;
+
       }
+
       .portfolio-header {
+
         flex-direction: column;
+
         align-items: flex-start;
+
       }
+
       footer {
+
         flex-direction: column;
+
         gap: 1rem;
+
         text-align: center;
+
       }
+
     }
+
+
 
     @media (prefers-reduced-motion: reduce) {
+
       .page { transition: none; }
+
       .project-item, .project-item::before, .btn { transition: none; }
+
       .video-bg { display: none; }
+
     }
+
   </style>
+
 </head>
+
 <body>
+
   <div class="video-container" aria-hidden="true">
-    <!-- SWAPPED: Using a reliable public test video here -->
+
     <video class="video-bg" autoplay muted loop playsinline preload="auto">
+
       <source src="background.mp4" type="video/mp4">
+
     </video>
+
     <div class="noise-overlay"></div>
+
   </div>
 
+
+
   <main class="app">
+
     <div class="shell">
+
       <header class="topbar">
+
         <div class="brand" onclick="showHome()" role="button" tabindex="0">
+
           <span>JH</span>.Works
+
         </div>
+
         <div style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">
+
           System / Guides
+
         </div>
+
       </header>
 
+
+
       <section id="home" class="page active">
+
         <div class="hero-eyebrow">Digital Workflows & Tools</div>
+
         <h1 class="hero-title">
+
           John<span>Hong</span>
+
         </h1>
+
         <p class="hero-desc">
+
           A collection of digital projects, intuitive guides, and workflow solutions designed to bring clarity to complex processes.
+
         </p>
+
         <div>
+
           <button class="btn" onclick="showPortfolio()">
+
             Explore Index <span>↘</span>
+
           </button>
+
         </div>
+
       </section>
+
+
 
       <section id="portfolio" class="page">
+
         <div class="portfolio-header">
+
           <h2>Selected<br>Projects</h2>
+
           <button class="btn back-btn" onclick="showHome()">← Return</button>
+
         </div>
+
+
 
         <div class="project-list">
+
+          <!-- Item 01 -->
+
           <a class="project-item" href="https://jhongdreamit.github.io/Payment-Guide-/" target="_blank" rel="noopener noreferrer">
+
             <div class="project-number">01 //</div>
+
             <div class="project-info">
+
               <h3>Payment Guide</h3>
+
               <p>A clear, user-friendly guide for navigating payment information and required steps.</p>
+
             </div>
+
             <div class="project-link">→</div>
+
           </a>
+
+
+
+          <!-- Item 02 -->
+
           <a class="project-item" href="https://jhongdreamit.github.io/B1-B2-COS-I-20-Guide/" target="_blank" rel="noopener noreferrer">
+
             <div class="project-number">02 //</div>
+
             <div class="project-info">
+
               <h3>B1/B2 COS & I-20</h3>
+
               <p>Organized guidance designed to make a complex administrative process easier to understand.</p>
+
             </div>
+
             <div class="project-link">→</div>
+
           </a>
-          <!-- Snipped extra items for brevity, they remain identical to your original code -->
+
+
+
+          <!-- Item 03 -->
+
+          <a class="project-item" href="https://jhongdreamit.github.io/INITIAL-GUIDE/" target="_blank" rel="noopener noreferrer">
+
+            <div class="project-number">03 //</div>
+
+            <div class="project-info">
+
+              <h3>Initial Guide</h3>
+
+              <p>An onboarding resource that presents important information in a structured, accessible format.</p>
+
+            </div>
+
+            <div class="project-link">→</div>
+
+          </a>
+
+
+
+          <!-- Item 04 -->
+
+          <a class="project-item" href="https://jhongdreamit.github.io/I20-EXTENSION/" target="_blank" rel="noopener noreferrer">
+
+            <div class="project-number">04 //</div>
+
+            <div class="project-info">
+
+              <h3>I-20 Extension</h3>
+
+              <p>A streamlined guide helping users understand the extension process and required documentation.</p>
+
+            </div>
+
+            <div class="project-link">→</div>
+
+          </a>
+
+
+
+          <!-- Item 05 -->
+
+          <a class="project-item" href="https://jhongdreamit.github.io/TRANSFER-IN-GUIDE/" target="_blank" rel="noopener noreferrer">
+
+            <div class="project-number">05 //</div>
+
+            <div class="project-info">
+
+              <h3>Transfer-In Guide</h3>
+
+              <p>An interactive checklist with organized sections, progress tracking, and multilingual support.</p>
+
+            </div>
+
+            <div class="project-link">→</div>
+
+          </a>
+
+
+
+          <!-- Item 06 -->
+
+          <a class="project-item" href="https://jhongdreamit.github.io/Payment-Calculator/" target="_blank" rel="noopener noreferrer">
+
+            <div class="project-number">06 //</div>
+
+            <div class="project-info">
+
+              <h3>Payment Calculator</h3>
+
+              <p>An interactive calculation tool designed to make payment estimates quick and straightforward.</p>
+
+            </div>
+
+            <div class="project-link">→</div>
+
+          </a>
+
         </div>
+
+
+
+        <footer>
+
+          <div>© 2026 John Hong</div>
+
+          <div>All Rights Reserved</div>
+
+        </footer>
+
       </section>
+
     </div>
+
   </main>
 
+
+
   <script>
+
     function showPortfolio() {
+
       const home = document.getElementById('home');
+
       const portfolio = document.getElementById('portfolio');
+
       
+
       home.style.opacity = '0';
+
       home.style.transform = 'translateY(-20px)';
+
       
+
       setTimeout(() => {
+
         home.classList.remove('active');
+
         portfolio.classList.add('active');
+
+        
+
+        // Trigger reflow for animation
+
         void portfolio.offsetWidth;
+
+        
+
         portfolio.style.opacity = '1';
+
         portfolio.style.transform = 'translateY(0)';
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, 400); 
+
+      }, 400); // Matches CSS transition timing
+
     }
+
+
 
     function showHome() {
+
       const home = document.getElementById('home');
+
       const portfolio = document.getElementById('portfolio');
+
       
+
       portfolio.style.opacity = '0';
+
       portfolio.style.transform = 'translateY(20px)';
+
       
+
       setTimeout(() => {
+
         portfolio.classList.remove('active');
+
         home.classList.add('active');
+
+        
+
+        // Trigger reflow for animation
+
         void home.offsetWidth;
+
+        
+
         home.style.opacity = '1';
+
         home.style.transform = 'translateY(0)';
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
+
       }, 400);
+
     }
 
+
+
+    // Video Autoplay Fallback Handling
+
     const bgVideo = document.querySelector('.video-bg');
+
     if (bgVideo) {
+
       bgVideo.play().catch(() => {
+
         const start = () => {
+
           bgVideo.play().catch(() => {});
+
           window.removeEventListener('pointerdown', start);
+
           window.removeEventListener('keydown', start);
+
         };
+
         window.addEventListener('pointerdown', start, { once: true });
+
         window.addEventListener('keydown', start, { once: true });
+
       });
+
     }
+
   </script>
+
 </body>
+
 </html>
