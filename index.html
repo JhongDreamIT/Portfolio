@@ -5,15 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#d9fd00">
   <title>John Hong | Portfolio</title>
+  
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@400;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@400;600;700&display=swap');
 
     :root {
-      --bg: #f4f4f0;
-      --ink: #0f0f0f;
-      --accent: #d9fd00; /* Acid green for an artistic, hip edge */
-      --border-dark: 2px solid #0f0f0f;
-      --radius: 0px; /* Sharp edges for a brutalist feel */
+      --bg: #f0f0f5; /* Light neutral base */
+      --ink: #0a0a0a; /* Stark black for borders/text */
+      
+      /* Vibrant Pop Colors for accents */
+      --acid: #d9fd00;
+      --pink: #ff3366;
+      --cyan: #00f0ff;
+      --purple: #8a2be2;
+
+      /* Glassmorphism Variables */
+      --glass-bg: rgba(255, 255, 255, 0.7); /* More opaque to block video noise */
+      --glass-bg-hover: rgba(255, 255, 255, 0.85);
+      --glass-blur: blur(16px);
+      --glass-border: 1px solid rgba(255, 255, 255, 0.8);
+      
+      /* Neo-Brutalism Variables */
+      --brutal-border: 3px solid var(--ink);
+      --shadow-sm: 4px 4px 0px var(--ink);
+      --shadow-md: 8px 8px 0px var(--ink);
+      --shadow-lg: 12px 12px 0px var(--ink);
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
     }
 
     * { box-sizing: border-box; }
@@ -25,6 +44,13 @@
       color: var(--ink);
       background: var(--bg);
       overflow-x: hidden;
+      selection-background: var(--acid);
+      selection-color: var(--ink);
+    }
+
+    ::selection {
+      background: var(--acid);
+      color: var(--ink);
     }
 
     h1, h2, h3, .brand, .number {
@@ -32,47 +58,63 @@
       text-transform: uppercase;
     }
 
-    /* Artistic Video Treatment */
+    /* Video Background */
     .video-bg {
       position: fixed;
       inset: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       object-fit: cover;
-      z-index: -3;
+      z-index: -2;
       pointer-events: none;
-      filter: grayscale(100%) contrast(1.2) opacity(0.15);
-      mix-blend-mode: multiply;
+      /* Subtle adjustments so it's visible but not distracting */
+      opacity: 0.6; 
+      filter: saturate(1.2);
     }
 
-    .video-overlay { display: none; }
-    .video-fallback {
+    /* Fallback background layer in case video fails */
+    .bg-fallback {
       position: fixed;
       inset: 0;
-      z-index: -4;
+      z-index: -3;
       background: var(--bg);
     }
 
-    .app { min-height: 100vh; padding: 2vw; }
+    .app { 
+      min-height: 100vh; 
+      padding: clamp(16px, 4vw, 40px); 
+      display: flex;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
 
     .shell {
       width: min(1200px, 100%);
-      min-height: calc(100vh - 4vw);
-      margin: auto;
+      min-height: calc(100vh - 8vw);
       display: flex;
       flex-direction: column;
-      border: var(--border-dark);
-      background: rgba(244, 244, 240, 0.85);
-      backdrop-filter: blur(10px);
+      
+      /* The Core Mix: Glass interior + Brutal exterior */
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: var(--brutal-border);
+      border-radius: var(--radius-lg);
+      box-shadow: inset 2px 2px 0px rgba(255, 255, 255, 0.7), var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
     }
 
     .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 24px;
-      border-bottom: var(--border-dark);
-      background: var(--accent);
+      padding: 24px 32px;
+      background: var(--acid);
+      border-bottom: var(--brutal-border);
+      /* Subtle inner highlight */
+      box-shadow: inset 0px 2px 0px rgba(255,255,255,0.5);
     }
 
     .brand {
@@ -84,68 +126,89 @@
     .page {
       display: none;
       flex: 1;
-      animation: fade 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    .page.active { display: flex; flex-direction: column; }
+    .page.active { 
+      display: flex; 
+      flex-direction: column; 
+    }
 
     #home { padding: 0; }
 
     .hero {
       width: 100%;
-      padding: 10vw 4vw;
+      padding: clamp(40px, 10vw, 120px) clamp(24px, 6vw, 64px);
       text-align: left;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
     }
 
     .eyebrow {
       display: inline-block;
-      padding: 6px 12px;
-      border: var(--border-dark);
+      padding: 8px 16px;
       background: var(--ink);
       color: var(--bg);
       font-size: 0.85rem;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      margin-bottom: 24px;
+      margin-bottom: 32px;
+      border-radius: var(--radius-sm);
+      box-shadow: 4px 4px 0px var(--acid);
+      border: 2px solid var(--ink);
     }
 
     h1 {
       margin: 0 0 24px;
-      font-size: clamp(4rem, 12vw, 9rem);
-      line-height: 0.85;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      line-height: 0.9;
       letter-spacing: -0.04em;
+      text-shadow: 2px 2px 0px #fff;
     }
 
     .hero p {
       max-width: 600px;
-      font-size: 1.25rem;
-      line-height: 1.5;
-      margin-bottom: 40px;
-      font-weight: 400;
+      font-size: clamp(1.1rem, 2vw, 1.25rem);
+      line-height: 1.6;
+      margin-bottom: 48px;
+      font-weight: 600;
+      color: #222;
     }
 
     .btn {
-      border: var(--border-dark);
       cursor: pointer;
       padding: 16px 32px;
       font: inherit;
-      font-weight: 700;
+      font-weight: 800;
       font-family: 'Syne', sans-serif;
       text-transform: uppercase;
-      background: var(--bg);
+      letter-spacing: 0.02em;
+      border: var(--brutal-border);
+      border-radius: var(--radius-sm);
+      background: #fff;
       color: var(--ink);
-      box-shadow: 4px 4px 0px var(--ink);
-      transition: all 0.2s ease;
+      box-shadow: var(--shadow-md);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    .btn-primary { background: var(--accent); }
-    .btn:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 8px 8px 0px var(--ink);
+    .btn-primary { 
+      background: var(--acid); 
     }
+    
+    .btn:hover {
+      transform: translate(-4px, -4px);
+      box-shadow: var(--shadow-lg);
+    }
+    
     .btn:active {
-      transform: translate(2px, 2px);
+      transform: translate(4px, 4px);
       box-shadow: 0px 0px 0px var(--ink);
     }
 
@@ -155,110 +218,141 @@
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
-      gap: 24px;
-      padding: 4vw;
-      border-bottom: var(--border-dark);
-      background: var(--accent);
+      flex-wrap: wrap;
+      gap: 32px;
+      padding: clamp(32px, 6vw, 64px);
+      border-bottom: var(--brutal-border);
+      background: rgba(255, 255, 255, 0.2);
     }
 
     .portfolio-head h2 {
-      margin: 0;
-      font-size: clamp(3rem, 6vw, 5rem);
+      margin: 16px 0 0 0;
+      font-size: clamp(3rem, 8vw, 5rem);
       letter-spacing: -0.04em;
-      line-height: 1;
+      line-height: 0.9;
+      text-shadow: 2px 2px 0px #fff;
     }
 
     .portfolio-head p {
       max-width: 300px;
-      margin: 0 0 16px 0;
+      margin: 0 0 24px 0;
       font-weight: 600;
+      line-height: 1.5;
     }
 
     .projects {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+      padding: clamp(32px, 6vw, 64px);
     }
 
+    /* Glass + Brutalism Cards */
     .card {
       display: flex;
       flex-direction: column;
-      min-height: 300px;
-      padding: 40px;
-      border-bottom: var(--border-dark);
-      border-right: var(--border-dark);
+      min-height: 320px;
+      padding: 32px;
       text-decoration: none;
       color: inherit;
-      background: transparent;
-      transition: background 0.3s ease, color 0.3s ease;
+      position: relative;
+      
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: var(--brutal-border);
+      border-radius: var(--radius-md);
+      box-shadow: inset 1px 1px 0px rgba(255,255,255,0.9), var(--shadow-md);
+      
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
-    .card:nth-child(even) { border-right: none; }
-    .card:nth-last-child(-n+2) { border-bottom: none; }
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: calc(var(--radius-md) - 3px);
+      background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+      pointer-events: none;
+    }
 
-    .card:hover { background: var(--ink); color: var(--bg); }
-    .card:hover .number { color: var(--accent); }
-    .card:hover .open { color: var(--accent); }
+    .card:hover { 
+      background: var(--glass-bg-hover);
+      transform: translate(-4px, -4px) rotate(-1deg);
+      box-shadow: inset 1px 1px 0px #fff, var(--shadow-lg);
+    }
+
+    .card:hover .number { color: var(--pink); text-shadow: 2px 2px 0px var(--ink); }
+    .card:hover .open { background: var(--ink); color: var(--acid); }
 
     .number {
-      font-size: 3rem;
+      font-size: 3.5rem;
       font-weight: 800;
       line-height: 1;
       margin-bottom: 24px;
       color: var(--ink);
-      transition: color 0.3s ease;
+      transition: all 0.3s ease;
     }
 
     .card h3 {
-      margin: 0 0 12px;
+      margin: 0 0 16px;
       font-size: 2rem;
       letter-spacing: -0.02em;
+      line-height: 1.1;
     }
 
     .card p {
       margin: 0;
       font-size: 1.1rem;
-      line-height: 1.4;
-      opacity: 0.9;
+      line-height: 1.5;
+      font-weight: 600;
+      color: #333;
     }
 
     .open {
       margin-top: auto;
-      padding-top: 32px;
+      align-self: flex-start;
+      padding: 10px 20px;
       font-family: 'Syne', sans-serif;
-      font-weight: 700;
+      font-weight: 800;
       text-transform: uppercase;
-      font-size: 1rem;
-      transition: color 0.3s ease;
+      font-size: 0.9rem;
+      border: 2px solid var(--ink);
+      border-radius: 40px;
+      background: #fff;
+      transition: all 0.3s ease;
+      margin-bottom: -10px; /* offset visual balance */
     }
 
     footer {
       padding: 24px;
-      border-top: var(--border-dark);
+      border-top: var(--brutal-border);
       font-family: 'Syne', sans-serif;
-      font-weight: 700;
+      font-weight: 800;
       text-transform: uppercase;
       text-align: center;
       background: var(--ink);
       color: var(--bg);
+      margin-top: auto;
     }
 
-    @keyframes fade {
-      from { opacity: 0; transform: scale(0.98); }
-      to { opacity: 1; transform: scale(1); }
+    @keyframes slideUpFade {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    @media(max-width: 900px) {
-      .projects { grid-template-columns: 1fr; }
-      .card { border-right: none; border-bottom: var(--border-dark); }
-      .card:nth-last-child(-n+2) { border-bottom: var(--border-dark); }
-      .card:last-child { border-bottom: none; }
+    @media(max-width: 768px) {
+      .projects { gap: 24px; }
       .portfolio-head { flex-direction: column; align-items: flex-start; }
+      .topbar { padding: 16px 24px; }
     }
   </style>
 </head>
 <body>
-  <div class="video-fallback" aria-hidden="true"></div>
+  
+  <div class="bg-fallback" aria-hidden="true"></div>
 
+  <!-- Video Background -->
   <video class="video-bg" autoplay muted loop playsinline preload="auto" aria-hidden="true">
     <source src="./background.mp4" type="video/mp4">
   </video>
@@ -279,64 +373,81 @@
             designed to make information clearer and everyday processes more efficient.
           </p>
           <button class="btn btn-primary" onclick="showPortfolio()">
-            View Portfolio ↘
+            View Portfolio 
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
           </button>
         </div>
       </section>
 
       <section id="portfolio" class="page">
-        <div class="portfolio-wrap">
+        <div class="portfolio-wrap" style="display:flex; flex-direction:column; height:100%;">
+          
           <div class="portfolio-head">
             <div>
-              <div class="eyebrow">Index</div>
+              <div class="eyebrow" style="box-shadow: 4px 4px 0px var(--pink);">Index</div>
               <h2>Selected<br>Work</h2>
             </div>
             <div>
               <p>Explore the projects below to view each live website, guide, or interactive tool.</p>
-              <button class="btn" onclick="showHome()">↖ Back</button>
+              <button class="btn" onclick="showHome()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="17" x2="7" y2="7"></line><polyline points="17 7 7 7 7 17"></polyline></svg>
+                Back
+              </button>
             </div>
           </div>
 
           <div class="projects">
+            <!-- Project 01 -->
             <a class="card" href="https://jhongdreamit.github.io/Payment-Guide-/" target="_blank" rel="noopener noreferrer">
               <div class="number">01</div>
               <h3>Payment Guide</h3>
               <p>A clear, user-friendly guide for navigating payment information and required steps.</p>
+              <div style="flex-grow:1;"></div>
               <div class="open">Open Project ↗</div>
             </a>
 
+            <!-- Project 02 -->
             <a class="card" href="https://jhongdreamit.github.io/B1-B2-COS-I-20-Guide/" target="_blank" rel="noopener noreferrer">
               <div class="number">02</div>
               <h3>B1/B2 COS & I-20</h3>
               <p>Organized guidance designed to make a complex administrative process easier to understand.</p>
+              <div style="flex-grow:1;"></div>
               <div class="open">Open Project ↗</div>
             </a>
 
+            <!-- Project 03 -->
             <a class="card" href="https://jhongdreamit.github.io/INITIAL-GUIDE/" target="_blank" rel="noopener noreferrer">
               <div class="number">03</div>
               <h3>Initial Guide</h3>
               <p>An onboarding resource that presents important information in a structured, accessible format.</p>
+              <div style="flex-grow:1;"></div>
               <div class="open">Open Project ↗</div>
             </a>
 
+            <!-- Project 04 -->
             <a class="card" href="https://jhongdreamit.github.io/I20-EXTENSION/" target="_blank" rel="noopener noreferrer">
               <div class="number">04</div>
               <h3>I-20 Extension</h3>
               <p>A streamlined guide helping users understand the extension process and required documentation.</p>
+              <div style="flex-grow:1;"></div>
               <div class="open">Open Project ↗</div>
             </a>
 
+            <!-- Project 05 -->
             <a class="card" href="https://jhongdreamit.github.io/TRANSFER-IN-GUIDE/" target="_blank" rel="noopener noreferrer">
               <div class="number">05</div>
               <h3>Transfer-In Guide</h3>
               <p>An interactive checklist with organized sections, progress tracking, and multilingual support.</p>
+              <div style="flex-grow:1;"></div>
               <div class="open">Open Project ↗</div>
             </a>
 
+            <!-- Project 06 -->
             <a class="card" href="https://jhongdreamit.github.io/Payment-Calculator/" target="_blank" rel="noopener noreferrer">
               <div class="number">06</div>
               <h3>Payment Calculator</h3>
               <p>An interactive calculation tool designed to make payment estimates quick and straightforward.</p>
+              <div style="flex-grow:1;"></div>
               <div class="open">Open Project ↗</div>
             </a>
           </div>
@@ -349,17 +460,31 @@
 
   <script>
     function showPortfolio(){
-      document.getElementById('home').classList.remove('active');
-      document.getElementById('portfolio').classList.add('active');
-      window.scrollTo({top:0, behavior:'smooth'});
+      const home = document.getElementById('home');
+      const portfolio = document.getElementById('portfolio');
+      
+      home.classList.remove('active');
+      
+      // Small delay to allow the DOM to reset display properties before fading in
+      setTimeout(() => {
+        portfolio.classList.add('active');
+        window.scrollTo({top:0, behavior:'smooth'});
+      }, 50);
     }
 
     function showHome(){
-      document.getElementById('portfolio').classList.remove('active');
-      document.getElementById('home').classList.add('active');
-      window.scrollTo({top:0, behavior:'smooth'});
+      const home = document.getElementById('home');
+      const portfolio = document.getElementById('portfolio');
+      
+      portfolio.classList.remove('active');
+      
+      setTimeout(() => {
+        home.classList.add('active');
+        window.scrollTo({top:0, behavior:'smooth'});
+      }, 50);
     }
 
+    // Ensure video plays on mobile devices
     const bgVideo = document.querySelector('.video-bg');
     bgVideo.play().catch(() => {
       const start = () => {
