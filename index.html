@@ -18,9 +18,10 @@
       --cyan: #00f0ff;
       --purple: #8a2be2;
 
-      --glass-bg: rgba(255, 255, 255, 0.88);
-      --glass-bg-hover: rgba(255, 255, 255, 0.94);
-      --glass-blur: blur(18px);
+      /* Lowered opacity so the background shines through the "glass" */
+      --glass-bg: rgba(255, 255, 255, 0.65);
+      --glass-bg-hover: rgba(255, 255, 255, 0.75);
+      --glass-blur: blur(12px); /* Reduced blur slightly for clearer background shapes */
       
       --brutal-border: 3px solid var(--ink);
       --shadow-sm: 4px 4px 0px var(--ink);
@@ -68,19 +69,19 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      opacity: 0.3;
-      filter: saturate(0.8);
+      /* Increased opacity and removed desaturation */
+      opacity: 0.85; 
     }
 
     .video-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(240, 240, 245, 0.55);
+      /* Significantly reduced the white wash overlay */
+      background: rgba(240, 240, 245, 0.2);
     }
 
     .app { 
       min-height: 100vh; 
-      /* Fluid padding that shrinks on mobile to save screen real estate */
       padding: clamp(12px, 4vw, 40px); 
       display: flex;
       justify-content: center;
@@ -220,7 +221,8 @@
       gap: 32px;
       padding: clamp(24px, 6vw, 64px);
       border-bottom: var(--brutal-border);
-      background: rgba(255, 255, 255, 0.8);
+      /* Lowered background opacity here to match the new shell */
+      background: rgba(255, 255, 255, 0.5);
     }
 
     .portfolio-head h2 {
@@ -240,7 +242,6 @@
 
     .projects {
       display: grid;
-      /* The min() wrapper ensures it never overflows on screens smaller than 280px */
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
       gap: clamp(20px, 4vw, 32px);
       padding: clamp(24px, 6vw, 64px);
@@ -340,10 +341,7 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
-    /* DEVICE SPECIFIC TWEAKS */
     
-    /* Small Tablets & Large Phones */
     @media(max-width: 768px) {
       .portfolio-head { 
         flex-direction: column; 
@@ -358,7 +356,6 @@
       }
     }
 
-    /* Small Mobile Phones (iPhone SE, etc.) */
     @media(max-width: 480px) {
       .topbar {
         padding: 12px 16px;
