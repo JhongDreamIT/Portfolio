@@ -18,10 +18,11 @@
       --cyan: #00f0ff;
       --purple: #8a2be2;
 
-      /* Lowered opacity so the background shines through the "glass" */
-      --glass-bg: rgba(255, 255, 255, 0.65);
-      --glass-bg-hover: rgba(255, 255, 255, 0.75);
-      --glass-blur: blur(12px); /* Reduced blur slightly for clearer background shapes */
+      /* Much more transparent glass to let the video through */
+      --glass-bg: rgba(255, 255, 255, 0.4);
+      --glass-bg-hover: rgba(255, 255, 255, 0.6);
+      /* Reduced blur so the video details are sharper behind the content */
+      --glass-blur: blur(8px); 
       
       --brutal-border: 3px solid var(--ink);
       --shadow-sm: 4px 4px 0px var(--ink);
@@ -69,15 +70,15 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      /* Increased opacity and removed desaturation */
-      opacity: 0.85; 
+      /* 100% Opacity for maximum visibility */
+      opacity: 1; 
     }
 
     .video-overlay {
       position: absolute;
       inset: 0;
-      /* Significantly reduced the white wash overlay */
-      background: rgba(240, 240, 245, 0.2);
+      /* Removed the white wash to let the video's true colors show */
+      background: transparent;
     }
 
     .app { 
@@ -175,6 +176,8 @@
       margin-bottom: clamp(32px, 6vw, 48px);
       font-weight: 600;
       color: #222;
+      /* Added a subtle white text shadow to ensure the text stays readable over complex video backgrounds */
+      text-shadow: 1px 1px 3px rgba(255,255,255,0.8);
     }
 
     .btn {
@@ -221,8 +224,8 @@
       gap: 32px;
       padding: clamp(24px, 6vw, 64px);
       border-bottom: var(--brutal-border);
-      /* Lowered background opacity here to match the new shell */
-      background: rgba(255, 255, 255, 0.5);
+      /* Matched to the new shell opacity */
+      background: rgba(255, 255, 255, 0.4);
     }
 
     .portfolio-head h2 {
@@ -238,6 +241,7 @@
       margin: 0 0 24px 0;
       font-weight: 600;
       line-height: 1.5;
+      text-shadow: 1px 1px 3px rgba(255,255,255,0.8);
     }
 
     .projects {
@@ -299,6 +303,7 @@
       font-size: clamp(1.5rem, 3vw, 2rem);
       letter-spacing: -0.02em;
       line-height: 1.1;
+      text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
     }
 
     .card p {
@@ -306,7 +311,8 @@
       font-size: clamp(1rem, 2vw, 1.1rem);
       line-height: 1.5;
       font-weight: 600;
-      color: #333;
+      color: #111;
+      text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
     }
 
     .open {
