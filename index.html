@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta name="theme-color" content="#d9fd00">
   <title>John Hong | Portfolio</title>
   
@@ -10,22 +10,18 @@
     @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@400;600;700&display=swap');
 
     :root {
-      --bg: #f0f0f5; /* Light neutral base */
-      --ink: #0a0a0a; /* Stark black for borders/text */
+      --bg: #f0f0f5; 
+      --ink: #0a0a0a; 
       
-      /* Vibrant Pop Colors for accents */
       --acid: #d9fd00;
       --pink: #ff3366;
       --cyan: #00f0ff;
       --purple: #8a2be2;
 
-      /* Glassmorphism Variables */
       --glass-bg: rgba(255, 255, 255, 0.88);
       --glass-bg-hover: rgba(255, 255, 255, 0.94);
       --glass-blur: blur(18px);
-      --glass-border: 1px solid rgba(255, 255, 255, 0.8);
       
-      /* Neo-Brutalism Variables */
       --brutal-border: 3px solid var(--ink);
       --shadow-sm: 4px 4px 0px var(--ink);
       --shadow-md: 8px 8px 0px var(--ink);
@@ -44,8 +40,7 @@
       color: var(--ink);
       background: var(--bg);
       overflow-x: hidden;
-      selection-background: var(--acid);
-      selection-color: var(--ink);
+      -webkit-font-smoothing: antialiased;
     }
 
     ::selection {
@@ -73,7 +68,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      /* Subtle adjustments so it's visible but not distracting */
       opacity: 0.3;
       filter: saturate(0.8);
     }
@@ -84,17 +78,10 @@
       background: rgba(240, 240, 245, 0.55);
     }
 
-    /* Fallback background layer in case video fails */
-    .bg-fallback {
-      position: fixed;
-      inset: 0;
-      z-index: -3;
-      background: var(--bg);
-    }
-
     .app { 
       min-height: 100vh; 
-      padding: clamp(16px, 4vw, 40px); 
+      /* Fluid padding that shrinks on mobile to save screen real estate */
+      padding: clamp(12px, 4vw, 40px); 
       display: flex;
       justify-content: center;
       position: relative;
@@ -103,11 +90,10 @@
 
     .shell {
       width: min(1200px, 100%);
-      min-height: calc(100vh - 8vw);
+      min-height: calc(100vh - clamp(24px, 8vw, 80px));
       display: flex;
       flex-direction: column;
       
-      /* The Core Mix: Glass interior + Brutal exterior */
       background: var(--glass-bg);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
@@ -125,14 +111,13 @@
       padding: 24px 32px;
       background: var(--acid);
       border-bottom: var(--brutal-border);
-      /* Subtle inner highlight */
       box-shadow: inset 0px 2px 0px rgba(255,255,255,0.5);
     }
 
     .brand {
       font-weight: 800;
       letter-spacing: -0.02em;
-      font-size: 1.5rem;
+      font-size: clamp(1.2rem, 3vw, 1.5rem);
     }
 
     .page {
@@ -168,7 +153,7 @@
       font-weight: 700;
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      margin-bottom: 32px;
+      margin-bottom: clamp(24px, 4vw, 32px);
       border-radius: var(--radius-sm);
       box-shadow: 4px 4px 0px var(--acid);
       border: 2px solid var(--ink);
@@ -176,7 +161,7 @@
 
     h1 {
       margin: 0 0 24px;
-      font-size: clamp(3.5rem, 10vw, 8rem);
+      font-size: clamp(3rem, 10vw, 8rem);
       line-height: 0.9;
       letter-spacing: -0.04em;
       text-shadow: 2px 2px 0px #fff;
@@ -184,21 +169,22 @@
 
     .hero p {
       max-width: 600px;
-      font-size: clamp(1.1rem, 2vw, 1.25rem);
+      font-size: clamp(1rem, 2vw, 1.25rem);
       line-height: 1.6;
-      margin-bottom: 48px;
+      margin-bottom: clamp(32px, 6vw, 48px);
       font-weight: 600;
       color: #222;
     }
 
     .btn {
       cursor: pointer;
-      padding: 16px 32px;
+      padding: clamp(12px, 3vw, 16px) clamp(24px, 5vw, 32px);
       font: inherit;
       font-weight: 800;
       font-family: 'Syne', sans-serif;
       text-transform: uppercase;
       letter-spacing: 0.02em;
+      font-size: clamp(0.9rem, 1.5vw, 1rem);
       border: var(--brutal-border);
       border-radius: var(--radius-sm);
       background: #fff;
@@ -232,14 +218,14 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 32px;
-      padding: clamp(32px, 6vw, 64px);
+      padding: clamp(24px, 6vw, 64px);
       border-bottom: var(--brutal-border);
       background: rgba(255, 255, 255, 0.8);
     }
 
     .portfolio-head h2 {
       margin: 16px 0 0 0;
-      font-size: clamp(3rem, 8vw, 5rem);
+      font-size: clamp(2.5rem, 8vw, 5rem);
       letter-spacing: -0.04em;
       line-height: 0.9;
       text-shadow: 2px 2px 0px #fff;
@@ -254,17 +240,17 @@
 
     .projects {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 32px;
-      padding: clamp(32px, 6vw, 64px);
+      /* The min() wrapper ensures it never overflows on screens smaller than 280px */
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+      gap: clamp(20px, 4vw, 32px);
+      padding: clamp(24px, 6vw, 64px);
     }
 
-    /* Glass + Brutalism Cards */
     .card {
       display: flex;
       flex-direction: column;
-      min-height: 320px;
-      padding: 32px;
+      min-height: clamp(280px, 30vh, 320px);
+      padding: clamp(24px, 5vw, 32px);
       text-decoration: none;
       color: inherit;
       position: relative;
@@ -288,17 +274,18 @@
       pointer-events: none;
     }
 
-    .card:hover { 
-      background: var(--glass-bg-hover);
-      transform: translate(-4px, -4px) rotate(-1deg);
-      box-shadow: inset 1px 1px 0px #fff, var(--shadow-lg);
+    @media (hover: hover) {
+      .card:hover { 
+        background: var(--glass-bg-hover);
+        transform: translate(-4px, -4px) rotate(-1deg);
+        box-shadow: inset 1px 1px 0px #fff, var(--shadow-lg);
+      }
+      .card:hover .number { color: var(--pink); text-shadow: 2px 2px 0px var(--ink); }
+      .card:hover .open { background: var(--ink); color: var(--acid); }
     }
 
-    .card:hover .number { color: var(--pink); text-shadow: 2px 2px 0px var(--ink); }
-    .card:hover .open { background: var(--ink); color: var(--acid); }
-
     .number {
-      font-size: 3.5rem;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
       font-weight: 800;
       line-height: 1;
       margin-bottom: 24px;
@@ -308,14 +295,14 @@
 
     .card h3 {
       margin: 0 0 16px;
-      font-size: 2rem;
+      font-size: clamp(1.5rem, 3vw, 2rem);
       letter-spacing: -0.02em;
       line-height: 1.1;
     }
 
     .card p {
       margin: 0;
-      font-size: 1.1rem;
+      font-size: clamp(1rem, 2vw, 1.1rem);
       line-height: 1.5;
       font-weight: 600;
       color: #333;
@@ -333,11 +320,11 @@
       border-radius: 40px;
       background: #fff;
       transition: all 0.3s ease;
-      margin-bottom: -10px; /* offset visual balance */
+      margin-bottom: -10px; 
     }
 
     footer {
-      padding: 24px;
+      padding: clamp(16px, 4vw, 24px);
       border-top: var(--brutal-border);
       font-family: 'Syne', sans-serif;
       font-weight: 800;
@@ -346,6 +333,7 @@
       background: var(--ink);
       color: var(--bg);
       margin-top: auto;
+      font-size: clamp(0.8rem, 2vw, 1rem);
     }
 
     @keyframes slideUpFade {
@@ -353,10 +341,36 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* DEVICE SPECIFIC TWEAKS */
+    
+    /* Small Tablets & Large Phones */
     @media(max-width: 768px) {
-      .projects { gap: 24px; }
-      .portfolio-head { flex-direction: column; align-items: flex-start; }
-      .topbar { padding: 16px 24px; }
+      .portfolio-head { 
+        flex-direction: column; 
+        align-items: flex-start; 
+        gap: 20px;
+      }
+      .topbar { 
+        padding: 16px 20px; 
+      }
+      .shell {
+        border-radius: var(--radius-md);
+      }
+    }
+
+    /* Small Mobile Phones (iPhone SE, etc.) */
+    @media(max-width: 480px) {
+      .topbar {
+        padding: 12px 16px;
+      }
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+      .open {
+        width: 100%;
+        text-align: center;
+      }
     }
   </style>
 </head>
@@ -477,7 +491,6 @@
       
       home.classList.remove('active');
       
-      // Small delay to allow the DOM to reset display properties before fading in
       setTimeout(() => {
         portfolio.classList.add('active');
         window.scrollTo({top:0, behavior:'smooth'});
@@ -496,16 +509,15 @@
       }, 50);
     }
 
-    // Ensure video plays on mobile devices
     const bgVideo = document.querySelector('.video-bg');
     bgVideo.play().catch(() => {
       const start = () => {
         bgVideo.play().catch(() => {});
         window.removeEventListener('pointerdown', start);
-        window.removeEventListener('keydown', start);
+        window.removeEventListener('touchstart', start);
       };
       window.addEventListener('pointerdown', start, {once:true});
-      window.addEventListener('keydown', start, {once:true});
+      window.addEventListener('touchstart', start, {once:true});
     });
   </script>
 </body>
